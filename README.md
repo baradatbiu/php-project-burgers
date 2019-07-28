@@ -1,2 +1,2 @@
 ##### админ-панель:
-https://php-project-burgers/admin/
+https://php-project-burgers/public/admin/
