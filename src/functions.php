@@ -5,9 +5,8 @@ require_once 'connect.php';
 function searchUser($email)
 {
   $pdo = getConnection();
-  $searchId = "SELECT id FROM users WHERE email = '{$email}'";
-
-  $ret = $pdo->prepare($searchId);
+  $ret = $pdo->prepare('SELECT id FROM users WHERE email = :email');
+  $ret->bindParam(':email', $email);
   $ret->execute();
   $ret = $ret->fetchAll(PDO::FETCH_ASSOC)[0];
   return $ret['id'];
@@ -16,18 +15,18 @@ function searchUser($email)
 function addNewUser($name, $email, $phone)
 {
   $pdo = getConnection();
-  $query = "INSERT INTO users (name, phone, email) VALUES ('{$name}', '{$phone}', '{$email}');";
-
-  $ret = $pdo->prepare($query);
+  $ret = $pdo->prepare('INSERT INTO users (name, phone, email) VALUES (:name, :phone, :email)');
+  $ret->bindParam(':name', $name);
+  $ret->bindParam(':email', $email);
+  $ret->bindParam(':phone', $phone);
   $ret->execute();
   return $ret;
 }
 
 function allUsers()
 {
-  $searchUsers = "SELECT * FROM users";
   $pdo = getConnection();
-  $ret = $pdo->prepare($searchUsers);
+  $ret = $pdo->prepare('SELECT * FROM users');
   $ret->execute();
   $ret = $ret->fetchAll(PDO::FETCH_ASSOC);
   return $ret;
@@ -39,9 +38,18 @@ function addNewOrder($userId, $street, $home, $part, $appt, $floor, $comment, $p
   $query = "INSERT INTO 
     orders (user_id, street, home, part, appt, floor, comment, callback, payment) 
     VALUES 
-    ('{$userId}', '{$street}', '{$home}', '{$part}', '{$appt}', '{$floor}', '{$comment}', '{$callback}', '{$payment}');";
+    (:userId, :street, :home, :part, :appt, :floor, :comment, :callback, :payment);";
 
   $ret = $pdo->prepare($query);
+  $ret->bindParam(':userId', $userId);
+  $ret->bindParam(':street', $street);
+  $ret->bindParam(':home', $home);
+  $ret->bindParam(':part', $part);
+  $ret->bindParam(':appt', $appt);
+  $ret->bindParam(':floor', $floor);
+  $ret->bindParam(':comment', $comment);
+  $ret->bindParam(':callback', $callback);
+  $ret->bindParam(':payment', $payment);
   $ret->execute();
   return $pdo->lastInsertId();
 }
@@ -49,9 +57,7 @@ function addNewOrder($userId, $street, $home, $part, $appt, $floor, $comment, $p
 function allOrders()
 {
   $pdo = getConnection();
-  $searchOrders = "SELECT * FROM orders";
-
-  $ret = $pdo->prepare($searchOrders);
+  $ret = $pdo->prepare('SELECT * FROM orders');
   $ret->execute();
   $ret = $ret->fetchAll(PDO::FETCH_ASSOC);
   return $ret;
@@ -60,9 +66,8 @@ function allOrders()
 function getAllUserOrders($userId)
 {
   $pdo = getConnection();
-  $query = " SELECT COUNT(*) as total FROM orders WHERE user_id = '$userId'";
-
-  $ret = $pdo->prepare($query);
+  $ret = $pdo->prepare('SELECT COUNT(*) as total FROM orders WHERE user_id = :userId');
+  $ret->bindParam(':userId', $userId);
   $ret->execute();
   $orderSum = $ret->fetchAll(PDO::FETCH_ASSOC);
   return $orderSum[0]['total'];
