@@ -26,9 +26,6 @@ $orderId = addNewOrder($userId, $street, $home, $part, $appt, $floor, $comment, 
 
 $countOrders = getAllUserOrders($userId);
 $address = 'улица: ' . $street . ', дом: ' . $home . ', корпус: ' . $part . ', квартира: ' . $appt . ', этаж: ' . $floor;
-
-$infoOrder = 'Информация о заказе: DarkBeefBurger за 500 рублей, 1 шт';
-$getTotalUserOrder = 'Спасибо! Это уже ' . $getTotalUserOrder . ' заказ' . PHP_EOL;
 $subject = "заказ №{$orderId}";
 
 mail($email, $subject, getMessage($orderId, $address, $countOrders));
