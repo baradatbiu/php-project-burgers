@@ -1,10 +1,8 @@
 <?php
 
-require_once 'connect.php';
-
 function searchUser($email)
 {
-  $pdo = getConnection();
+  global $pdo;
   $ret = $pdo->prepare('SELECT id FROM users WHERE email = :email');
   $ret->bindParam(':email', $email);
   $ret->execute();
@@ -14,7 +12,7 @@ function searchUser($email)
 
 function addNewUser($name, $email, $phone)
 {
-  $pdo = getConnection();
+  global $pdo;
   $ret = $pdo->prepare('INSERT INTO users (name, phone, email) VALUES (:name, :phone, :email)');
   $ret->bindParam(':name', $name);
   $ret->bindParam(':email', $email);
@@ -25,7 +23,7 @@ function addNewUser($name, $email, $phone)
 
 function allUsers()
 {
-  $pdo = getConnection();
+  global $pdo;
   $ret = $pdo->prepare('SELECT * FROM users');
   $ret->execute();
   $ret = $ret->fetchAll(PDO::FETCH_ASSOC);
@@ -34,7 +32,7 @@ function allUsers()
 
 function addNewOrder($userId, $street, $home, $part, $appt, $floor, $comment, $payment, $callback)
 {
-  $pdo = getConnection();
+  global $pdo;
   $query = "INSERT INTO 
     orders (user_id, street, home, part, appt, floor, comment, callback, payment) 
     VALUES 
@@ -56,7 +54,7 @@ function addNewOrder($userId, $street, $home, $part, $appt, $floor, $comment, $p
 
 function allOrders()
 {
-  $pdo = getConnection();
+  global $pdo;
   $ret = $pdo->prepare('SELECT * FROM orders');
   $ret->execute();
   $ret = $ret->fetchAll(PDO::FETCH_ASSOC);
@@ -65,7 +63,7 @@ function allOrders()
 
 function getAllUserOrders($userId)
 {
-  $pdo = getConnection();
+  global $pdo;
   $ret = $pdo->prepare('SELECT COUNT(*) as total FROM orders WHERE user_id = :userId');
   $ret->bindParam(':userId', $userId);
   $ret->execute();

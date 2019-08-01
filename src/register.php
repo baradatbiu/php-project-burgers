@@ -15,19 +15,20 @@ if (isset($_GET['name']) && isset($_GET['email']) && isset($_GET['phone']) && is
   return null;
 }
 
+require_once 'config.php';
 require_once 'connect.php';
 require_once 'functions.php';
 
-$userId = searchUser($email);
+$userId = searchUser($config, $email);
 
 if (empty($userId)) {
-  addNewUser($name, $email, $phone);
-  $userId = searchUser($email);
+  addNewUser($config, $name, $email, $phone);
+  $userId = searchUser($config, $email);
 }
 
-$orderId = addNewOrder($userId, $street, $home, $part, $appt, $floor, $comment, $payment, $callback);
+$orderId = addNewOrder($config, $userId, $street, $home, $part, $appt, $floor, $comment, $payment, $callback);
 
-$countOrders = getAllUserOrders($userId);
+$countOrders = getAllUserOrders($config, $userId);
 $address = 'улица: ' . $street . ', дом: ' . $home . ', корпус: ' . $part . ', квартира: ' . $appt . ', этаж: ' . $floor;
 $subject = "заказ №{$orderId}";
 
