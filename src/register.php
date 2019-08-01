@@ -19,16 +19,16 @@ require_once 'config.php';
 require_once 'connect.php';
 require_once 'functions.php';
 
-$userId = searchUser($config, $email);
+$userId = searchUser($email);
 
 if (empty($userId)) {
-  addNewUser($config, $name, $email, $phone);
-  $userId = searchUser($config, $email);
+  addNewUser($name, $email, $phone);
+  $userId = searchUser($email);
 }
 
-$orderId = addNewOrder($config, $userId, $street, $home, $part, $appt, $floor, $comment, $payment, $callback);
+$orderId = addNewOrder($userId, $street, $home, $part, $appt, $floor, $comment, $payment, $callback);
 
-$countOrders = getAllUserOrders($config, $userId);
+$countOrders = getAllUserOrders($userId);
 $address = 'улица: ' . $street . ', дом: ' . $home . ', корпус: ' . $part . ', квартира: ' . $appt . ', этаж: ' . $floor;
 $subject = "заказ №{$orderId}";
 
