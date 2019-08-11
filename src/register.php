@@ -18,6 +18,7 @@ if (isset($_GET['name']) && isset($_GET['email']) && isset($_GET['phone']) && is
 require_once 'config.php';
 require_once 'connect.php';
 require_once 'functions.php';
+require_once 'sendMail.php';
 
 $userId = searchUser($email);
 
@@ -32,4 +33,4 @@ $countOrders = getAllUserOrders($userId);
 $address = 'улица: ' . $street . ', дом: ' . $home . ', корпус: ' . $part . ', квартира: ' . $appt . ', этаж: ' . $floor;
 $subject = "заказ №{$orderId}";
 
-mail($email, $subject, getMessage($orderId, $address, $countOrders));
+sendMail($email, $subject, getMessage($orderId, $address, $countOrders));
