@@ -19,6 +19,7 @@ require_once 'config.php';
 require_once 'connect.php';
 require_once 'functions.php';
 require_once 'sendMail.php';
+require_once 'renderTwig.php';
 
 $userId = searchUser($email);
 
@@ -34,3 +35,5 @@ $address = 'улица: ' . $street . ', дом: ' . $home . ', корпус: ' 
 $subject = "заказ №{$orderId}";
 
 sendMail($email, $subject, getMessage($orderId, $address, $countOrders));
+
+renderTwig($orderId, $address);
